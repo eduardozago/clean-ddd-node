@@ -1,6 +1,5 @@
 import { Answer } from '../../enterprise/entities/answer'
 import { AnswersRepository } from '../repositories/answers-repository'
-import { findManyByQuestionId } from '../repositories/question-repository'
 
 interface FetchQuestionsAnswersUseCaseRequest {
   questionId: string
