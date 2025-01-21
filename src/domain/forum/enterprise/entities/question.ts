@@ -3,15 +3,15 @@ import { Slug } from './value-objects/slug'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 import dayjs from 'dayjs'
-import { QuestionAttachment } from './question-attachment'
+import { QuestionAttachmentList } from './question-attachment-list'
 
 export interface QuestionProps {
   authorId: UniqueEntityID
   bestAnswerId?: UniqueEntityID
-  attachments: QuestionAttachment[]
   title: string
   content: string
   slug: Slug
+  attachments: QuestionAttachmentList
   createdAt: Date
   updatedAt?: Date
 }
@@ -25,10 +25,6 @@ export class Question extends AggregateRoot<QuestionProps> {
     return this.props.bestAnswerId
   }
 
-  get attachments() {
-    return this.props.attachments
-  }
-
   get title() {
     return this.props.title
   }
@@ -39,6 +35,10 @@ export class Question extends AggregateRoot<QuestionProps> {
 
   get slug() {
     return this.props.slug
+  }
+
+  get attachments() {
+    return this.props.attachments
   }
 
   get createdAt() {
@@ -61,10 +61,6 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.props.updatedAt = new Date()
   }
 
-  set attachments(attachments: QuestionAttachment[]) {
-    this.props.attachments = attachments
-  }
-
   set title(title: string) {
     this.props.title = title
     this.props.slug = Slug.createFromText(title)
@@ -82,6 +78,10 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.touch()
   }
 
+  set attachments(attachments: QuestionAttachmentList) {
+    this.props.attachments = attachments
+  }
+
   static create(
     props: Optional<QuestionProps, 'createdAt' | 'slug' | 'attachments'>,
     id?: UniqueEntityID,
@@ -90,7 +90,7 @@ export class Question extends AggregateRoot<QuestionProps> {
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),
-        attachments: props.attachments ?? [],
+        attachments: props.attachments ?? new QuestionAttachmentList(),
         createdAt: props.createdAt ?? new Date(),
       },
       id,
