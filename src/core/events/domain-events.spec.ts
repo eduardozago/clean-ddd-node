@@ -3,6 +3,7 @@ import { UniqueEntityID } from '../entities/unique-entity-id'
 import { AggregateRoot } from '../entities/aggregate-root'
 import { DomainEvents } from '@/core/events/domain-events'
 import { vi } from 'vitest'
+
 class CustomAggregateCreated implements DomainEvent {
   public ocurredAt: Date
   private aggregate: CustomAggregate // eslint-disable-line
